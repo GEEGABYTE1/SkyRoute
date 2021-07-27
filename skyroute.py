@@ -72,3 +72,41 @@ def get_end():
   else:
     print('We do not have any data about that very landmark')
     return get_end()
+
+def new_route(start_point=None, end_point=None):
+  start_point, end_point = set_start_and_end(start_point, end_point)
+
+def get_route(start_point, end_point):
+  start_stations = vc_landmarks[start_point]
+  end_stations = vc_landmarks[end_point]
+  routes = []
+
+  for start_station in start_stations:
+    for end_station in end_stations:
+      route = bfs(vc_metro, start_station, end_station)
+      
+      if route:
+        routes.append(route)
+  
+  shortest_route = min(routes, key=len)
+  return shortest_route
+
+
+  
+
+first = None 
+second = None
+for name in vc_landmarks.keys():
+    first = name 
+    break 
+
+counter = 0 
+for name in vc_landmarks.keys():
+    counter += 1
+    if counter == 2:
+        second = name 
+        break
+    continue  
+
+
+print(get_route(first, second))
