@@ -2,6 +2,7 @@ from graph_search import bfs, dfs
 from vc_metro import vc_metro
 from vc_landmarks import vc_landmarks
 from landmark_choices import landmark_choices
+import time
 
 # Build your program below:
 
@@ -41,7 +42,26 @@ def set_start_and_end(start_point, end_point):
   
   return start_point, end_point
 def get_start():
-  pass
+  print()
+  for letter, destination in landmark_choices.items():
+    print("Here are your choices: ")
+    time.sleep(0.2)
+    print(letter + ' = ' + destination)
+  print()
+  time.sleep(0.2)
+  start_point_letter = input("Where are you coming from? Please type in the corresponding letter: ")
+
+  start_point_checker = landmark_choices.get(start_point_letter, None)
+
+  if start_point_checker != None:
+    start_point = landmark_choices[start_point_letter]
+    return start_point
+  else:
+    print('We do not have any data about that very landmark')
+    return get_start()
 
 def get_end():
   pass
+
+
+print(get_start())
