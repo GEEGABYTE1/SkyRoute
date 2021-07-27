@@ -15,7 +15,7 @@ def dfs(graph, current_vertex, target, visited=None):
 
 def bfs(graph, start_vertex, target):
     path = [start_vertex]
-    vertex_and_path = [start_vertex, target]
+    vertex_and_path = [start_vertex, path]
     bfs_queue = [vertex_and_path]
     visited = set()
 
