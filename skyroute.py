@@ -21,8 +21,25 @@ def skyroute():
   greet()
 
 def set_start_and_end(start_point, end_point):
-  pass
+  if start_point != None:
+    change_point = input("What would you like to change? You can enter 'o' for 'origin', 'd' for 'destination', or 'b' for 'both': ")
 
+    if change_point == "b":
+      start_point = get_start()
+      end_point = get_end()
+    elif change_point == "o":
+      start_point = get_start()
+    elif change_point == "d":
+      end_point = get_end()
+    else:
+      print("The command does not seem to be valid.")
+      return set_start_and_end(start_point, end_point)
+
+  else:
+    start_point = get_start()
+    end_point = get_end()
+  
+  return start_point, end_point
 def get_start():
   pass
 
