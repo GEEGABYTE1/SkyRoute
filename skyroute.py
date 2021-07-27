@@ -61,7 +61,14 @@ def get_start():
     return get_start()
 
 def get_end():
-  pass
+  print()
+  start_point_letter = input("Ok, where are you headed? Type in the corresponding letter: ")
 
+  start_point_checker = landmark_choices.get(start_point_letter, None)
 
-print(get_start())
+  if start_point_checker != None:
+    end_point = landmark_choices[start_point_letter]
+    return end_point
+  else:
+    print('We do not have any data about that very landmark')
+    return get_end()
