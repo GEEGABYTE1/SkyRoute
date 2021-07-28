@@ -13,6 +13,8 @@ for letter, word in landmark_choices.items():
   string += str(word)
   landmark_string = string 
 
+stations_under_construction = ['My face', 'Mangoes']
+
 def greet():
   print('Hi there and welcome to SkyRoute!')
   print()
@@ -78,8 +80,11 @@ def get_end():
 def new_route(start_point=None, end_point=None):
   start_point, end_point = set_start_and_end(start_point, end_point)
   shortest_route = get_route(start_point, end_point)
-  shortest_route_string = '\n'.join(shortest_route)
-  print("The shortest metro route from {a} to {b} is: {}".format(shortest_route_string, a=start_point, b=end_point))
+  if shortest_route:
+    shortest_route_string = '\n'.join(shortest_route)
+    print("The shortest metro route from {a} to {b} is: {}".format(shortest_route_string, a=start_point, b=end_point))
+  else:
+    print('Unfortunately, there is currently no path between {a} and {b} due to maintenance.'.format(a=start_point, b=end_point))
   time.sleep(0.1)
   print()
   again = input('Would you like to see another route? Enter y/n: ')
@@ -101,7 +106,15 @@ def get_route(start_point, end_point):
 
   for start_station in start_stations:
     for end_station in end_stations:
-      route = bfs(vc_metro, start_station, end_station)
+      metro_system = get_active_stations() if stations_under_construction else vc_metro 
+      if len(stations_under_construction) != 0:
+          possible_route = dfs(metro_system, start_station, end_station)
+          if possible_route == None:
+              return None 
+
+    
+        
+      route = bfs(metro_system, start_station, end_station)
       
       if route:
         routes.append(route)
@@ -111,6 +124,18 @@ def get_route(start_point, end_point):
 
 def goodbye():
     print("Thanks for using SkyRoute!")
+
+def get_active_stations():
+    updated_metro = vc_metro 
+    for station_under_construction in stations_under_construction:
+        for current_station in vc_metro[station_under_construction]:
+            if current_station != station_under_construction:
+                updated_metro[current_station] -= set(station_under_construction)
+            else:
+                updated_metro[current_station] = set([])
+    
+    return updated_metro
+
 
 
 print(skyroute())
