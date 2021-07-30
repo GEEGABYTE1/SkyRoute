@@ -21,14 +21,13 @@ With the use of both Breadth-First and Depth-First Graph Search algorithms, user
 The Depth-First algorithm is used to see if there is a station that correponds to a landmark. Since we users can add stations under construction with `/add_construction`, it would not make any sense for the station to still be running. Hence, to make the program flow with those changes, if there is a station that is under construction, we will use the depth-first algorithm to see if there is another path from the start to the destination. If there is, we will return the possible route as a path, otherwise, we will return that there is no path possible. We return this because each landmark has at least one station. When there is a station under construction, we remove the station from each landmark. Therefore, there may be possibility where there actually is no path between a start point and the desired destination.
 
 # Breadth-First Implementation
-The BFS algorithm is used when there is no station under construction. Since the algorithm will append a list of each possible path (which is also an array), we want to return the shortest, as that will return the shortest path (this was done using Merge Sort). However, just like DFS, if there is no possible route between them, then the algorithm will return `None`, which will indicate to the user that there was no optimal path found. 
+The BFS algorithm is used when there is no station under construction. Since the algorithm will append a list of each possible path (which is also an array), we want to return the shortest, as that will return the shortest path. However, just like DFS, if there is no possible route between them, then the algorithm will return `None`, which will indicate to the user that there was no optimal path found. 
 
 # More Information 
  
  ## Time Complexities:
  - Breadth-First: `O(no.vertices + no.edges)`
  - Depth-First: `O(no.vertices + no.edges)`
- - Merge-Sort: `O(n log n)`
 
 To create a new route, the program takes the same start point and end point and calls various functions recursively under the same parameters.
 
