@@ -22,6 +22,8 @@ def skyroute():
   playing = True
   
   while playing:
+    time.sleep(0.2)
+    print()
     running = new_route()
     if running == False:
       break
