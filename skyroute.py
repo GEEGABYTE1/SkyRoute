@@ -7,7 +7,8 @@ import time
 # Build your program below:
 
 landmark_string = ""
-stations_under_construction = []
+stations_under_construction = ['Burrard', 'Lake City Way']
+starter_point_letter = None
 
 for letter, place in landmark_choices.items():
   landmark_string += "{letter} ---> {place} \n".format(letter=letter, place=place)
@@ -18,7 +19,18 @@ def greet():
 
 def skyroute():
   greet()
-  new_route()
+  playing = True
+  
+  while playing:
+    running = new_route()
+    if running == False:
+      break
+    elif running == '/add_construction':
+      print(add_construction())
+    else:
+      continue
+    
+    
   goodbye()
 
 def set_start_and_end(start_point, end_point):
@@ -43,6 +55,7 @@ def set_start_and_end(start_point, end_point):
 
 def get_start():
   start_point_letter = input('Where are you coming from? Type in the corresponding letter: ')
+  start_point_letter = start_point_letter
   retrieve_letter = landmark_choices.get(start_point_letter, None)
   if retrieve_letter:
     start_point = landmark_choices[start_point_letter]
@@ -50,19 +63,28 @@ def get_start():
   else:
     print("We do not have any data on that landmark")
     return get_start()
+
 def get_end():
   end_point_letter = input('Where are you headed? Type in the corresponding letter: ') 
-  retrieve_letter = landmark_choices.get(end_point_letter, None)
-  if retrieve_letter:
-    end_point = landmark_choices[end_point_letter]
-    return end_point
+  if end_point_letter == starter_point_letter:
+    print("You are already at your destination")
+    return new_route()
   else:
-     print("We do not have any data on that landmark")
-     return get_end()
+    retrieve_letter = landmark_choices.get(end_point_letter, None)
+    if retrieve_letter:
+      end_point = landmark_choices[end_point_letter]
+      return end_point
+    else:
+      print("We do not have any data on that landmark")
+      return get_end()
 
 def new_route(start_point=None, end_point=None):
   start_point, end_point = set_start_and_end(start_point, end_point)
   shortest_route = get_route(start_point, end_point)
+
+  if shortest_route == None:
+    print("No optimal path found")
+    return 
   
   shortest_route_string = ""
   for i in shortest_route:
@@ -76,6 +98,11 @@ def new_route(start_point=None, end_point=None):
   if again == 'y':
     show_landmarks()
     new_route(start_point, end_point)
+  
+  elif again == 'n':
+    return False
+  elif again == '/add_construction':
+    return '/add_construction'
   
 def show_landmarks():
   see_landmarks = input("Would you like to see the list of landmarks again? Enter y/n: ")
@@ -91,7 +118,18 @@ def get_route(start_point, end_point):
 
   for start_station in start_stations:
     for end_station in end_stations:
-      route = bfs(vc_metro, start_station, end_station)
+
+      if len(stations_under_construction) != 0:
+        metro_system = get_active_stations()
+        possible_route = dfs(metro_system, start_station, end_station)
+        if possible_route == None:
+          return None
+        else:
+          return possible_route
+      else:
+        metro_system = vc_metro
+
+      route = bfs(metro_system, start_station, end_station)
 
       if route:
         routes.append(route)
@@ -99,10 +137,42 @@ def get_route(start_point, end_point):
   shortest_route = min(routes, key=len)
   return shortest_route
 
+def get_active_stations():
+  updated_metro = vc_metro
+  for station_under_construction in stations_under_construction:
+    for current_station in vc_metro[station_under_construction]:
+      if current_station != station_under_construction:
+        updated_metro[current_station]  -= set(stations_under_construction)
+      else:
+        updated_metro[current_station] = set([])
+  
+  return updated_metro
+
+def add_construction():
+  stations = []
+  print("Here are the stations that can be under construction: ")
+  for list in vc_landmarks.values():
+    for station in list:
+      if not station in stations:
+        stations.append(station)
+  
+  for station in stations:
+    print(station)
+  print()
+  
+  station = input('Please type in a name of a station: ')
+  if station in stations_under_construction:
+    print('That station is already under construction')
+    add_construction()
+  elif not station in stations:
+    print('That station does not seem to be recorded')
+  else:
+    stations_under_construction.append(station)
+
+
 def goodbye():
   print("Thanks for using SkyRoute!")
 
 
 
-#print(get_route('Stanley Park', 'Science World'))
 print(skyroute())
