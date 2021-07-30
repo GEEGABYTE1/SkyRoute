@@ -63,11 +63,15 @@ def get_end():
 def new_route(start_point=None, end_point=None):
   start_point, end_point = set_start_and_end(start_point, end_point)
   shortest_route = get_route(start_point, end_point)
+  
   shortest_route_string = ""
   for i in shortest_route:
     shortest_route_string += "{} ----> ".format(i)
   shortest_route_string = shortest_route_string.strip("----> ")
-  print("The shortest route from {start} to {end} is {path}".format(start=start_point, end=end_point, path=shortest_route_string))
+  if shortest_route_string != "":
+    print("The shortest route from {start} to {end} is {path}".format(start=start_point, end=end_point, path=shortest_route_string))
+  else:
+    print("There is currently no path between {start} and {end}".format(start=start_point, end=end_point))
   again = input("Would you like to see another route? Enter y/n: ")
   if again == 'y':
     show_landmarks()
