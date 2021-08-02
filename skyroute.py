@@ -15,7 +15,7 @@ for letter, place in landmark_choices.items():
 
 def greet():
   print("Hi there and welcome to SkyRoute! ")
-  print("We'll help you find the shortest route between the following Vancouver landmarks {}".format(landmark_string))
+  print("We'll help you find the shortest route between the following Vancouver landmarks {}\n".format(landmark_string))
 
 def skyroute():
   greet()
