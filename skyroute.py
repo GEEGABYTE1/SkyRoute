@@ -3,12 +3,14 @@ from vc_metro import vc_metro
 from vc_landmarks import vc_landmarks
 from landmark_choices import landmark_choices
 import time
+routes_global = []
 
-# Build your program below:
+
 
 landmark_string = ""
-stations_under_construction = ['Burrard', 'Lake City Way']
+stations_under_construction = []
 starter_point_letter = None
+
 
 for letter, place in landmark_choices.items():
   landmark_string += "{letter} ---> {place} \n".format(letter=letter, place=place)
@@ -94,6 +96,23 @@ def new_route(start_point=None, end_point=None):
   shortest_route_string = shortest_route_string.strip("----> ")
   if shortest_route_string != "":
     print("The shortest route from {start} to {end} is {path}".format(start=start_point, end=end_point, path=shortest_route_string))
+    time.sleep(0.1)
+    question = input("Would you like to see another path of the same two landmarks? Enter y/n: ")
+    if question == 'y':
+      try:
+        shortest_route_output = routes_global.pop()
+        shortest_route_string = ""
+        for i in shortest_route_output:
+          shortest_route_string += "{} ----> ".format(i)
+        shortest_route_string = shortest_route_string.strip("----> ")
+        print(shortest_route_string)
+        print()
+      except IndexError:
+        print('There is no other possible path!')
+    else:
+      pass
+        
+
   else:
     print("There is currently no path between {start} and {end}".format(start=start_point, end=end_point))
   again = input("Would you like to see another route? Enter y/n: ")
@@ -137,6 +156,7 @@ def get_route(start_point, end_point):
         routes.append(route)
   
   shortest_route = min(routes, key=len)
+  routes_global += routes
   return shortest_route
 
 def get_active_stations():
