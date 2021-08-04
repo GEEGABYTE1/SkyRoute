@@ -84,7 +84,8 @@ def get_end():
 
 def new_route(start_point=None, end_point=None):
   start_point, end_point = set_start_and_end(start_point, end_point)
-  shortest_route = get_route(start_point, end_point)
+  shortest_route = get_route(start_point, end_point)[0]
+  result = get_route(start_point, end_point)
 
   if shortest_route == None:
     print("No optimal path found")
@@ -99,6 +100,7 @@ def new_route(start_point=None, end_point=None):
     time.sleep(0.1)
     question = input("Would you like to see another path of the same two landmarks? Enter y/n: ")
     if question == 'y':
+      routes_global = result[1]
       try:
         shortest_route_output = routes_global.pop()
         shortest_route_string = ""
@@ -156,8 +158,8 @@ def get_route(start_point, end_point):
         routes.append(route)
   
   shortest_route = min(routes, key=len)
-  routes_global += routes
-  return shortest_route
+  
+  return shortest_route, routes
 
 def get_active_stations():
   updated_metro = vc_metro
